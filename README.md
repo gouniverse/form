@@ -21,7 +21,7 @@
 
 This is an example taken from real life code of a controller type with a form method. The method returns a customer update Form.
 
-```go
+```golang
 func (controller customerUpdateController) form(data customerUpdateControllerData) *hb.Tag {
 	updateCustomerForm := form.NewForm(form.FormOptions{
 		ID: "FormCustomerUpdate",
@@ -114,9 +114,10 @@ func (controller customerUpdateController) form(data customerUpdateControllerDat
 
 }
 ```
+
 The save button outside of the form method. It uses HTMX for submitting the form.
 
-```go
+```golang
 buttonSave := hb.NewButton().
 	Class("btn btn-primary ms-2 float-end").
 	Child(hb.NewI().Class("bi bi-save").Style("margin-top:-4px;margin-right:8px;font-size:16px;")).
