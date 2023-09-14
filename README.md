@@ -2,6 +2,21 @@
 
 <a href="https://gitpod.io/#https://github.com/gouniverse/form" target="_blank" style="float:right;"><img src="https://gitpod.io/button/open-in-gitpod.svg" alt="Open in Gitpod" loading="lazy"></a>
 
+## Form Field Types
+
+- date
+- datetime
+- image
+- htmlarea
+- hidden
+- number
+- password
+- select
+- string
+- table
+- textarea
+- raw
+
 ## Example Customer Update Form
 
 This is an example taken from real life code of a controller type with a form method. The method returns a customer update Form.
