@@ -5,6 +5,7 @@ import (
 
 	"github.com/gouniverse/bs"
 	"github.com/gouniverse/hb"
+	"github.com/gouniverse/utils"
 )
 
 type Field struct {
@@ -26,9 +27,10 @@ type TableColumn struct {
 	Width int
 }
 type TableOptions struct {
-	Header     []TableColumn
-	Rows       [][]Field
-	Repeatable bool
+	Header          []TableColumn
+	Rows            [][]Field
+	RowAddButton    *hb.Tag
+	RowDeleteButton *hb.Tag
 }
 
 func (field *Field) IsDate() bool {
@@ -185,6 +187,10 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 
 	if field.IsTable() {
 		header := hb.NewThead()
+		if field.TableOptions.RowDeleteButton != nil {
+			th := hb.NewTH().HTML("#").Style("width:1px;")
+			header.AddChild(th)
+		}
 		for _, v := range field.TableOptions.Header {
 			th := hb.NewTH().HTML(v.Label)
 			if v.Width != 0 {
@@ -192,19 +198,33 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 			}
 			header.AddChild(th)
 		}
+
 		rows := hb.NewTbody()
-		for _, rowFields := range field.TableOptions.Rows {
-			tr := hb.NewTR()
+		for rowIndex, rowFields := range field.TableOptions.Rows {
+			tr := hb.NewTR().Data("row-index", utils.ToString(rowIndex))
+			if field.TableOptions.RowDeleteButton != nil {
+				deleteButton := field.TableOptions.RowDeleteButton.
+					Type(hb.TYPE_BUTTON).
+					Data("row-index", utils.ToString(rowIndex))
+				td := hb.NewTH().Child(deleteButton)
+				tr.AddChild(td)
+			}
 			for _, rowField := range rowFields {
 				td := hb.NewTD().Child(rowField.fieldInput(fileManagerURL))
 				tr.AddChild(td)
 			}
 			rows.AddChild(tr)
 		}
-		input = hb.NewTable().
+		table := hb.NewTable().
 			Class("table table-striped table-hover mb-0").
 			Child(header).
 			Child(rows)
+
+		input = hb.NewWrap().Child(table)
+
+		if field.TableOptions.RowAddButton != nil {
+			input.AddChild(hb.NewDiv().Child(field.TableOptions.RowAddButton.Type(hb.TYPE_BUTTON)))
+		}
 	}
 
 	if field.IsTextArea() {
