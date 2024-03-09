@@ -5,11 +5,12 @@ import (
 
 	"github.com/gouniverse/bs"
 	"github.com/gouniverse/hb"
+	"github.com/gouniverse/uid"
 	"github.com/gouniverse/utils"
 )
 
 type Field struct {
-	ID  	     string // automatic, if not assigned
+	ID           string // automatic, if not assigned
 	Type         string
 	Name         string
 	Label        string
@@ -95,6 +96,14 @@ func (field *Field) IsRaw() bool {
 }
 
 func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
+	if field.IsRaw() {
+		return hb.NewHTML(field.Value)
+	}
+
+	if field.ID == "" {
+		field.ID = "id_" + uid.HumanUid()
+	}
+
 	input := hb.NewTag(``) // no tag by default
 
 	if field.IsDate() ||
@@ -104,6 +113,7 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 		field.IsNumber() {
 
 		input = hb.NewInput().
+			ID(field.ID).
 			Class("form-control").
 			Name(field.Name).
 			Value(field.Value)
@@ -131,6 +141,7 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 
 	if field.IsDateTime() {
 		input = hb.NewInput().
+			ID(field.ID).
 			Type(hb.TYPE_DATETIME).
 			Class("form-control").
 			Name(field.Name).
@@ -148,6 +159,7 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 
 			bs.InputGroup().Children([]*hb.Tag{
 				hb.NewInput().
+					ID(field.ID).
 					Type(hb.TYPE_URL).
 					Class("form-control").
 					Name(field.Name).
@@ -160,15 +172,19 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 	}
 
 	if field.IsHtmlArea() {
-		input = hb.NewTag("trumbowyg").
-			Name(field.Name).
-			Attr("v-model", "entityModel."+field.Name).
-			Attr(":config", "trumbowigConfig").
-			Class("form-control")
+		input = hb.NewWrap().Child(
+			hb.NewTextArea().
+				ID(field.ID).
+				Class("form-control").
+				Name(field.Name).
+				Text(field.Value)).
+			Child(hb.NewScript(field.TrumbowygScript())).
+			Child(hb.NewScript(`setTimeout(() => {initWysiwyg("` + field.ID + `")}, 100);`))
 	}
 
 	if field.IsSelect() {
 		input = hb.NewSelect().
+			ID(field.ID).
 			Name(field.Name).
 			Class("form-select")
 
@@ -217,6 +233,7 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 			rows.AddChild(tr)
 		}
 		table := hb.NewTable().
+			ID(field.ID).
 			Class("table table-striped table-hover mb-0").
 			Child(header).
 			Child(rows)
@@ -230,6 +247,7 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 
 	if field.IsTextArea() {
 		input = hb.NewTextArea().
+			ID(field.ID).
 			Name(field.Name).
 			Class("form-control").
 			HTML(field.Value)
