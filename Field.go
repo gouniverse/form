@@ -9,6 +9,7 @@ import (
 )
 
 type Field struct {
+	ID  	     string // automatic, if not assigned
 	Type         string
 	Name         string
 	Label        string
@@ -302,4 +303,38 @@ func (field *Field) BuildFormGroup(fileManagerURL string) *hb.Tag {
 	}
 
 	return formGroup
+}
+
+func (field *Field) TrumbowygScript() string {
+	return `
+if (!window.trumbowigConfig) {
+	window.trumbowigConfig = {
+		btns: [
+			['formatting'],
+			['strong', 'em'],
+			['link','justifyLeft','justifyRight','justifyCenter','justifyFull'],
+			['unorderedList', 'orderedList'],
+			['removeformat'],
+			['undo', 'redo'],
+			['formatting'],
+			['strong', 'em', 'del', 'superscript', 'subscript'],
+			['link','justifyLeft','justifyRight','justifyCenter','justifyFull'],
+			['unorderedList', 'orderedList'],
+			['horizontalRule'],
+			['removeformat'],
+			['fullscreen'],
+		],
+		autogrow: true,
+		removeformatPasted: true,
+		tagsToRemove: ['script', 'link', 'embed', 'iframe', 'input'],
+		tagsToKeep: ['hr', 'img', 'i'],
+		autogrowOnEnter: true,
+		linkTargets: ['_blank'],
+	};
+
+	function initWysiwyg(textareaID) {
+		$('#' + textareaID).trumbowyg(window.trumbowigConfig);
+	}
+}
+`
 }
