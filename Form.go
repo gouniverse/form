@@ -46,6 +46,9 @@ func NewForm(opts FormOptions) *Form {
 	form.actionUrl = opts.ActionURL
 	form.id = opts.ID
 	form.className = opts.ClassName
+	form.hxPost = opts.HxPost
+	form.hxTarget = opts.HxTarget
+	form.hxSwap = opts.HxSwap
 	return form
 }
 
