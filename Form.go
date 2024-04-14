@@ -13,6 +13,11 @@ type Form struct {
 	fileManagerURL string
 	method         string
 	actionUrl      string
+
+	// HTMX helpers
+	hxPost   string
+	hxTarget string
+	hxSwap   string
 }
 
 type FormOptions struct {
@@ -22,6 +27,12 @@ type FormOptions struct {
 	Fields         []Field // optional
 	FileManagerURL string  // optional
 	Method         string  // optional
+
+	// HTMX helpers
+	HxPost   string // optional
+	HxTarget string // optional
+	HxSwap   string // optional
+
 }
 
 func NewForm(opts FormOptions) *Form {
@@ -68,14 +79,30 @@ func (form *Form) Build() *hb.Tag {
 	hbForm := hb.NewForm()
 	hbForm.Children(tags)
 	hbForm.Method(form.method)
+
 	if form.actionUrl != "" {
 		hbForm.Action(form.actionUrl)
 	}
+
 	if form.id != "" {
 		hbForm.ID(form.id)
 	}
+
 	if form.className != "" {
 		hbForm.Class(form.className)
 	}
+
+	if form.hxPost != "" {
+		hbForm.HxPost(form.hxPost)
+	}
+
+	if form.hxTarget != "" {
+		hbForm.HxTarget(form.hxTarget)
+	}
+
+	if form.hxSwap != "" {
+		hbForm.HxSwap(form.hxSwap)
+	}
+
 	return hbForm
 }
