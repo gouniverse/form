@@ -73,7 +73,7 @@ func (form *Form) SetFileManagerURL(url string) {
 }
 
 func (form *Form) Build() *hb.Tag {
-	tags := []*hb.Tag{}
+	tags := []hb.TagInterface{}
 
 	for _, field := range form.fields {
 		tags = append(tags, field.BuildFormGroup(form.fileManagerURL))

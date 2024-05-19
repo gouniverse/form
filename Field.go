@@ -151,20 +151,20 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 	}
 
 	if field.IsImage() {
-		input = hb.NewDiv().Children([]*hb.Tag{
+		input = hb.NewDiv().Children([]hb.TagInterface{
 			hb.NewImage().
 				AttrIf(field.Value != "", `src`, field.Value).
 				AttrIf(field.Value == "", `src`, `https://www.freeiconspng.com/uploads/no-image-icon-11.PNG`).
 				Style(`width:200px;`),
 
-			bs.InputGroup().Children([]*hb.Tag{
+			bs.InputGroup().Children([]hb.TagInterface{
 				hb.NewInput().
 					ID(field.ID).
 					Type(hb.TYPE_URL).
 					Class("form-control").
 					Name(field.Name).
 					Value(field.Value),
-				hb.If(fileManagerURL != "", bs.InputGroupText().Children([]*hb.Tag{
+				hb.If(fileManagerURL != "", bs.InputGroupText().Children([]hb.TagInterface{
 					hb.NewHyperlink().HTML("Browse").Href(fileManagerURL).Target("_blank"),
 				})),
 			}),
