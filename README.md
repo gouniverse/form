@@ -129,9 +129,19 @@ buttonSave := hb.NewButton().
 
 ## Advanced
 
-### Configuring the HTML teatarea. 
+### Configuring the HTML textarea. 
 
-The HTML area uses the Trumbowyg wisiwyg editor. If you need special options
+The HTML area uses the Trumbowyg wisiwyg editor. To use it you need to add the following to the web page:
+
+```html
+// Trumbowyg requires jQuery >= 1.8
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+<script src="trumbowyg/dist/trumbowyg.min.js"></script>
+<link rel="stylesheet" href="trumbowyg/dist/ui/trumbowyg.min.css">
+```
+
+If you need special options
 for the editor, you can use the `Options` field as in the example below.
 
 ```golang
