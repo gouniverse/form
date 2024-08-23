@@ -329,17 +329,12 @@ if (!window.trumbowigConfig) {
 	window.trumbowigConfig = {
 		btns: [
 			['formatting'],
-			['strong', 'em'],
+			['strong', 'em', 'del', 'superscript', 'subscript'],
 			['link','justifyLeft','justifyRight','justifyCenter','justifyFull'],
 			['unorderedList', 'orderedList'],
 			['removeformat'],
 			['undo', 'redo'],
-			['formatting'],
-			['strong', 'em', 'del', 'superscript', 'subscript'],
-			['link','justifyLeft','justifyRight','justifyCenter','justifyFull'],
-			['unorderedList', 'orderedList'],
 			['horizontalRule'],
-			['removeformat'],
 			['fullscreen'],
 		],
 		autogrow: true,
