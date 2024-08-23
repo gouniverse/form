@@ -148,7 +148,7 @@ for the editor, you can use the `Options` field as in the example below.
 {
 	Label: "Content",
 	Name:  "post_content",
-	Type:  contentType,
+	Type:  FORM_FIELD_TYPE_TEXTAREA,
 	Value: data.formContent,
 	Help:  "The content of this blog post to display on the post details page.",
 	Options: []form.FieldOption{
