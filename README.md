@@ -126,3 +126,45 @@ buttonSave := hb.NewButton().
 	HxPost(links.NewAdminLinks().CustomerUpdate(data.customerID)).
 	HxTarget("#FormCustomerUpdate")
 ```
+
+## Advanced
+
+### Configuring the HTML teatarea. 
+
+The HTML area uses the Trumbowyg wisiwyg editor. If you need special options
+for the editor, you can use the `Options` field as in the example below.
+
+```golang
+{
+	Label: "Content",
+	Name:  "post_content",
+	Type:  contentType,
+	Value: data.formContent,
+	Help:  "The content of this blog post to display on the post details page.",
+	Options: []form.FieldOption{
+		{
+			Key: "config",
+			Value: `{
+btns: [
+	['viewHTML'],
+	['undo', 'redo'],
+	['formatting'],
+	['strong', 'em', 'del'],
+	['superscript', 'subscript'],
+	['link','justifyLeft','justifyRight','justifyCenter','justifyFull'],
+	['unorderedList', 'orderedList'],
+	['insertImage'],
+	['removeformat'],
+	['horizontalRule'],
+	['fullscreen'],
+],
+autogrow: true,
+removeformatPasted: true,
+tagsToRemove: ['script', 'link', 'embed', 'iframe', 'input'],
+tagsToKeep: ['hr', 'img', 'i'],
+autogrowOnEnter: true,
+linkTargets: ['_blank'],
+}`,
+		},
+},
+```

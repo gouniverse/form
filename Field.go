@@ -7,6 +7,7 @@ import (
 	"github.com/gouniverse/hb"
 	"github.com/gouniverse/uid"
 	"github.com/gouniverse/utils"
+	"github.com/samber/lo"
 )
 
 type Field struct {
@@ -178,8 +179,8 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 				Class("form-control").
 				Name(field.Name).
 				Text(field.Value)).
-			Child(hb.NewScript(field.TrumbowygScript())).
-			Child(hb.NewScript(`setTimeout(() => {initWysiwyg("` + field.ID + `")}, 100);`))
+			Child(hb.NewScript(field.TrumbowygScript()))
+		// Child(hb.NewScript(`setTimeout(() => {initWysiwyg("` + field.ID + `")}, 100);`))
 	}
 
 	if field.IsSelect() {
@@ -324,12 +325,23 @@ func (field *Field) BuildFormGroup(fileManagerURL string) *hb.Tag {
 }
 
 func (field *Field) TrumbowygScript() string {
+	fieldConfig, found := lo.Find(field.Options, func(fieldOption FieldOption) bool {
+		return fieldOption.Key == "config"
+	})
+
+	config := "null"
+
+	if found {
+		config = fieldConfig.Value
+	}
+
 	return `
 if (!window.trumbowigConfig) {
 	window.trumbowigConfig = {
 		btns: [
 			['formatting'],
-			['strong', 'em', 'del', 'superscript', 'subscript'],
+			['strong', 'em', 'del'],
+			['superscript', 'subscript'],
 			['link','justifyLeft','justifyRight','justifyCenter','justifyFull'],
 			['unorderedList', 'orderedList'],
 			['removeformat'],
@@ -345,9 +357,14 @@ if (!window.trumbowigConfig) {
 		linkTargets: ['_blank'],
 	};
 
-	function initWysiwyg(textareaID) {
-		$('#' + textareaID).trumbowyg(window.trumbowigConfig);
+	function initWysiwyg(textareaID, config) {
+	    var editorConfig = config || window.trumbowigConfig;
+		$('#' + textareaID).trumbowyg(editorConfig);
 	}
 }
+
+setTimeout(() => {
+	initWysiwyg("` + field.ID + `", ` + config + `);	
+}, 200);
 `
 }
