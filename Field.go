@@ -288,7 +288,7 @@ func (field *Field) BuildFormGroup(fileManagerURL string) *hb.Tag {
 		fieldLabel = fieldName
 	}
 
-	formGroup := hb.NewDiv().Class("form-group mt-3")
+	formGroup := hb.NewDiv().Class("form-group mb-3")
 
 	formGroupLabel := hb.NewLabel().
 		HTML(fieldLabel).
