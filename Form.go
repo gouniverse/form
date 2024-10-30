@@ -79,7 +79,7 @@ func (form *Form) Build() *hb.Tag {
 		tags = append(tags, field.BuildFormGroup(form.fileManagerURL))
 	}
 
-	hbForm := hb.NewForm()
+	hbForm := hb.Form()
 	hbForm.Children(tags)
 	hbForm.Method(form.method)
 

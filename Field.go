@@ -23,6 +23,8 @@ type Field struct {
 	Readonly     bool
 	Disabled     bool
 	TableOptions TableOptions
+	Placeholder  string
+	Invisible    bool
 }
 
 type TableColumn struct {
@@ -118,6 +120,10 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 			Class("form-control").
 			Name(field.Name).
 			Value(field.Value)
+
+		if field.Placeholder != "" {
+			input.Placeholder(field.Placeholder)
+		}
 
 		if field.IsDate() {
 			input.Type(hb.TYPE_DATE)
@@ -288,7 +294,8 @@ func (field *Field) BuildFormGroup(fileManagerURL string) *hb.Tag {
 		fieldLabel = fieldName
 	}
 
-	formGroup := hb.NewDiv().Class("form-group mb-3")
+	formGroup := hb.NewDiv().
+		Class("form-group mb-3")
 
 	formGroupLabel := hb.NewLabel().
 		HTML(fieldLabel).
@@ -314,6 +321,14 @@ func (field *Field) BuildFormGroup(fileManagerURL string) *hb.Tag {
 	}
 	formGroup.Child(field.fieldInput(fileManagerURL))
 	formGroup.Child(hiddenInput)
+
+	if !field.IsHidden() {
+		formGroupLabel.Attr("for", field.ID)
+	}
+
+	if field.Invisible {
+		formGroup.Attr("style", "display:none;")
+	}
 
 	// Add help
 	if field.Help != "" {
