@@ -1,5 +1,6 @@
 package form
 
+const FORM_FIELD_TYPE_BLOCKEDITOR = "blockeditor"
 const FORM_FIELD_TYPE_DATE = "date"
 const FORM_FIELD_TYPE_DATETIME = "datetime"
 const FORM_FIELD_TYPE_IMAGE = "image"

@@ -23,8 +23,10 @@ type Field struct {
 	Readonly     bool
 	Disabled     bool
 	TableOptions TableOptions
-	Placeholder  string
-	Invisible    bool
+	// BlockEditorOptions BlockEditorOptions
+	Placeholder string
+	Invisible   bool
+	CustomInput hb.TagInterface
 }
 
 type TableColumn struct {
@@ -36,6 +38,10 @@ type TableOptions struct {
 	Rows            [][]Field
 	RowAddButton    *hb.Tag
 	RowDeleteButton *hb.Tag
+}
+
+func (field *Field) IsBlockEditor() bool {
+	return field.Type == FORM_FIELD_TYPE_BLOCKEDITOR
 }
 
 func (field *Field) IsDate() bool {
@@ -187,6 +193,24 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 				Text(field.Value)).
 			Child(hb.NewScript(field.TrumbowygScript()))
 		// Child(hb.NewScript(`setTimeout(() => {initWysiwyg("` + field.ID + `")}, 100);`))
+	}
+
+	if field.IsBlockEditor() {
+		textInputOnError := hb.NewTextArea().
+			ID(field.ID).
+			Class("form-control").
+			Name(field.Name).
+			Text(field.Value)
+
+		if field.CustomInput == nil {
+			return hb.Wrap().
+				Child(hb.Div().
+					Class("alert alert-danger").
+					Text("CustomInput is nil")).
+				Child(textInputOnError)
+		}
+
+		input = hb.Wrap(field.CustomInput)
 	}
 
 	if field.IsSelect() {
