@@ -349,10 +349,9 @@ func (field *Field) fieldTable(fileManagerURL string) *hb.Tag {
 func (field *Field) fieldTextArea() *hb.Tag {
 	return hb.NewTextArea().
 		ID(field.ID).
-		Type(hb.TYPE_TEXT).
 		Class("form-control").
 		Name(field.Name).
-		Value(field.Value)
+		HTML(field.Value)
 }
 
 func (field *Field) BuildFormGroup(fileManagerURL string) *hb.Tag {
