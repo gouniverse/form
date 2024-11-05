@@ -14,6 +14,7 @@ import "github.com/gouniverse/hb"
 // == CLASS ===================================================================
 
 type fieldRepeater struct {
+	fieldLabel string
 	fieldType  string
 	fieldName  string
 	fieldValue string
@@ -26,12 +27,29 @@ type fieldRepeater struct {
 var _ FieldInterface = (*fieldRepeater)(nil)
 
 // == IMPLEMENTATION OF FieldInterface ========================================
+func (field *fieldRepeater) GetLabel() string {
+	return field.fieldLabel
+}
+
+func (field *fieldRepeater) SetLabel(fieldLabel string) {
+	field.fieldLabel = fieldLabel
+}
+
 func (field *fieldRepeater) GetName() string {
 	return field.fieldName
 }
 
 func (field *fieldRepeater) SetName(fieldName string) {
 	field.fieldName = fieldName
+}
+
+// GetRequired is always false for the repeater field
+func (field *fieldRepeater) GetRequired() bool {
+	return false
+}
+
+// SetRequired is not really needed for the repeater field
+func (field *fieldRepeater) SetRequired(fieldRequired bool) {
 }
 
 func (field *fieldRepeater) GetType() string {
