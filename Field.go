@@ -9,6 +9,8 @@ import (
 	"github.com/samber/lo"
 )
 
+// == CLASS ===================================================================
+
 type Field struct {
 	ID           string // automatic, if not assigned
 	Type         string
@@ -28,6 +30,36 @@ type Field struct {
 	CustomInput hb.TagInterface
 }
 
+// == INTERFACES ==============================================================
+
+var _ FieldInterface = (*Field)(nil)
+
+// == IMPLEMENTATION OF FieldInterface ========================================
+
+func (field *Field) GetName() string {
+	return field.Name
+}
+
+func (field *Field) SetName(fieldName string) {
+	field.Name = fieldName
+}
+
+func (field *Field) GetType() string {
+	return field.Type
+}
+
+func (field *Field) SetType(fieldType string) {
+	field.Type = fieldType
+}
+
+func (field *Field) GetValue() string {
+	return field.Value
+}
+
+func (field *Field) SetValue(fieldValue string) {
+	field.Value = fieldValue
+}
+
 type TableColumn struct {
 	Label string
 	Width int
@@ -38,6 +70,8 @@ type TableOptions struct {
 	RowAddButton    *hb.Tag
 	RowDeleteButton *hb.Tag
 }
+
+// == METHODS ================================================================
 
 func (field *Field) IsBlockEditor() bool {
 	return field.Type == FORM_FIELD_TYPE_BLOCKEDITOR

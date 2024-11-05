@@ -9,7 +9,7 @@ import (
 type Form struct {
 	id             string
 	className      string
-	fields         []Field
+	fields         []FieldInterface
 	fileManagerURL string
 	method         string
 	actionUrl      string
@@ -21,12 +21,12 @@ type Form struct {
 }
 
 type FormOptions struct {
-	ActionURL      string  // optional
-	ClassName      string  // optional
-	ID             string  // optional
-	Fields         []Field // optional
-	FileManagerURL string  // optional
-	Method         string  // optional
+	ActionURL      string           // optional
+	ClassName      string           // optional
+	ID             string           // optional
+	Fields         []FieldInterface // optional
+	FileManagerURL string           // optional
+	Method         string           // optional
 
 	// HTMX helpers
 	HxPost   string // optional
@@ -52,15 +52,15 @@ func NewForm(opts FormOptions) *Form {
 	return form
 }
 
-func (form *Form) AddField(field Field) {
+func (form *Form) AddField(field FieldInterface) {
 	form.fields = append(form.fields, field)
 }
 
-func (form *Form) GetFields() []Field {
+func (form *Form) GetFields() []FieldInterface {
 	return form.fields
 }
 
-func (form *Form) SetFields(fields []Field) {
+func (form *Form) SetFields(fields []FieldInterface) {
 	form.fields = fields
 }
 
