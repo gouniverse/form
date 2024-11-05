@@ -14,6 +14,8 @@ import "github.com/gouniverse/hb"
 // == CLASS ===================================================================
 
 type fieldRepeater struct {
+	fieldHelp  string
+	fieldID    string
 	fieldLabel string
 	fieldType  string
 	fieldName  string
@@ -27,6 +29,14 @@ type fieldRepeater struct {
 var _ FieldInterface = (*fieldRepeater)(nil)
 
 // == IMPLEMENTATION OF FieldInterface ========================================
+func (field *fieldRepeater) GetID() string {
+	return field.fieldID
+}
+
+func (field *fieldRepeater) SetID(fieldID string) {
+	field.fieldID = fieldID
+}
+
 func (field *fieldRepeater) GetLabel() string {
 	return field.fieldLabel
 }
@@ -35,12 +45,42 @@ func (field *fieldRepeater) SetLabel(fieldLabel string) {
 	field.fieldLabel = fieldLabel
 }
 
+func (field *fieldRepeater) GetHelp() string {
+	return field.fieldHelp
+}
+
+func (field *fieldRepeater) SetHelp(fieldHelp string) {
+	field.fieldHelp = fieldHelp
+}
+
 func (field *fieldRepeater) GetName() string {
 	return field.fieldName
 }
 
 func (field *fieldRepeater) SetName(fieldName string) {
 	field.fieldName = fieldName
+}
+
+// GetOptions is not really needed for the repeater field
+func (field *fieldRepeater) GetOptions() []FieldOption {
+	return []FieldOption{}
+}
+
+// SetOptions is not really needed for the repeater field
+func (field *fieldRepeater) SetOptions(fieldOptions []FieldOption) {
+
+}
+
+// GetOptionsF is not really needed for the repeater field
+func (field *fieldRepeater) GetOptionsF() func() []FieldOption {
+	return func() []FieldOption {
+		return []FieldOption{}
+	}
+}
+
+// SetOptionsF is not really needed for the repeater field
+func (field *fieldRepeater) SetOptionsF(fieldOptionsF func() []FieldOption) {
+
 }
 
 // GetRequired is always false for the repeater field

@@ -36,6 +36,14 @@ var _ FieldInterface = (*Field)(nil)
 
 // == IMPLEMENTATION OF FieldInterface ========================================
 
+func (field *Field) GetID() string {
+	return field.ID
+}
+
+func (field *Field) SetID(fieldID string) {
+	field.ID = fieldID
+}
+
 func (field *Field) GetLabel() string {
 	return field.Label
 }
@@ -44,12 +52,36 @@ func (field *Field) SetLabel(fieldLabel string) {
 	field.Label = fieldLabel
 }
 
+func (field *Field) GetHelp() string {
+	return field.Help
+}
+
+func (field *Field) SetHelp(fieldHelp string) {
+	field.Help = fieldHelp
+}
+
 func (field *Field) GetName() string {
 	return field.Name
 }
 
 func (field *Field) SetName(fieldName string) {
 	field.Name = fieldName
+}
+
+func (field *Field) GetOptions() []FieldOption {
+	return field.Options
+}
+
+func (field *Field) SetOptions(fieldOptions []FieldOption) {
+	field.Options = fieldOptions
+}
+
+func (field *Field) GetOptionsF() func() []FieldOption {
+	return field.OptionsF
+}
+
+func (field *Field) SetOptionsF(fieldOptionsF func() []FieldOption) {
+	field.OptionsF = fieldOptionsF
 }
 
 func (field *Field) GetRequired() bool {
