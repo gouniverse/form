@@ -442,6 +442,7 @@ func (field *Field) BuildFormGroup(fileManagerURL string) *hb.Tag {
 	}
 
 	fieldName := field.Name
+
 	fieldLabel := field.Label
 	if fieldLabel == "" {
 		fieldLabel = fieldName
@@ -455,7 +456,7 @@ func (field *Field) BuildFormGroup(fileManagerURL string) *hb.Tag {
 		Class("form-label").
 		ChildIf(
 			field.Required,
-			hb.NewSup().HTML("*").Class("text-danger ml-1"),
+			hb.NewSup().HTML("*").Class("text-danger ms-1"),
 		)
 
 	// Hidden input
@@ -472,6 +473,7 @@ func (field *Field) BuildFormGroup(fileManagerURL string) *hb.Tag {
 	if !field.IsHidden() {
 		formGroup.Child(formGroupLabel)
 	}
+
 	formGroup.Child(field.fieldInput(fileManagerURL))
 	formGroup.Child(hiddenInput)
 
@@ -480,13 +482,13 @@ func (field *Field) BuildFormGroup(fileManagerURL string) *hb.Tag {
 	}
 
 	if field.Invisible {
-		formGroup.Attr("style", "display:none;")
+		formGroup.Style("display:none;")
 	}
 
 	// Add help
 	if field.Help != "" {
 		formGroupHelp := hb.NewParagraph().Class("text-info").HTML(field.Help)
-		formGroup.AddChild(formGroupHelp)
+		formGroup.Child(formGroupHelp)
 	}
 
 	return formGroup
