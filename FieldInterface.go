@@ -22,4 +22,5 @@ type FieldInterface interface {
 	GetValue() string
 	SetValue(fieldValue string)
 	BuildFormGroup(fileManagerURL string) *hb.Tag
+	clone() FieldInterface
 }

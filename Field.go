@@ -538,3 +538,8 @@ setTimeout(() => {
 }, 200);
 `
 }
+
+func (field *Field) clone() FieldInterface {
+	fieldCopy := *field
+	return &fieldCopy
+}

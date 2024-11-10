@@ -46,12 +46,28 @@ func TestFormWithRepeater(t *testing.T) {
 				Type:  FORM_FIELD_TYPE_STRING,
 				Fields: []FieldInterface{
 					&Field{
-						ID:    "ID",
-						Name:  "NAME",
-						Value: "VALUE",
+						ID:    "ID_1",
+						Name:  "NAME_1",
+						Value: "VALUE_1",
 						Type:  FORM_FIELD_TYPE_STRING,
-					}},
-				Values: [][]map[string]string{},
+					},
+					&Field{
+						ID:    "ID_2",
+						Name:  "NAME_2",
+						Value: "VALUE_2",
+						Type:  FORM_FIELD_TYPE_STRING,
+					},
+				},
+				Values: []map[string]string{
+					{
+						"NAME_1": "VALUE_1_01",
+						"NAME_2": "VALUE_2_01",
+					},
+					{
+						"NAME_1": "VALUE_1_02",
+						"NAME_2": "VALUE_2_02",
+					},
+				},
 			}),
 		},
 	})
@@ -64,6 +80,9 @@ func TestFormWithRepeater(t *testing.T) {
 
 	expecteds := []string{
 		`<form method="POST">`,
+		`<div class="form-group mb-3">`,
+		`<label class="form-label">LABEL</label>`,
+		`name="NAME[]"`,
 		`</form>`,
 	}
 	for _, expected := range expecteds {

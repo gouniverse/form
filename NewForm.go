@@ -1,6 +1,8 @@
 package form
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type FormOptions struct {
 	ActionURL      string           // optional
