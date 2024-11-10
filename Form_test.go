@@ -42,8 +42,11 @@ func TestFormWithRepeater(t *testing.T) {
 	form := NewForm(FormOptions{
 		Fields: []FieldInterface{
 			NewRepeater(RepeaterOptions{
-				Label: "LABEL",
-				Type:  FORM_FIELD_TYPE_STRING,
+				Label:               "LABEL",
+				RepeaterAddUrl:      "REPEATER_ADD_URL",
+				RepeaterMoveUpUrl:   "REPEATER_MOVE_UP_URL",
+				RepeaterMoveDownUrl: "REPEATER_MOVE_DOWN_URL",
+				RepeaterRemoveUrl:   "REPEATER_REMOVE_URL",
 				Fields: []FieldInterface{
 					&Field{
 						ID:    "ID_1",
@@ -81,8 +84,17 @@ func TestFormWithRepeater(t *testing.T) {
 	expecteds := []string{
 		`<form method="POST">`,
 		`<div class="form-group mb-3">`,
-		`<label class="form-label">LABEL</label>`,
-		`name="NAME[]"`,
+		`<label class="form-label">LABEL`,
+		`hx-post="REPEATER_ADD_URL"`,
+		`hx-post="REPEATER_REMOVE_URL`,
+		`hx-post="REPEATER_MOVE_UP_URL`,
+		`hx-post="REPEATER_MOVE_DOWN_URL`,
+		`name="NAME_1[]"`,
+		`name="NAME_2[]"`,
+		`value="VALUE_1_01"`,
+		`value="VALUE_1_02"`,
+		`value="VALUE_2_01"`,
+		`value="VALUE_2_02"`,
 		`</form>`,
 	}
 	for _, expected := range expecteds {
