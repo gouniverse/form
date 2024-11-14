@@ -184,3 +184,7 @@ linkTargets: ['_blank'],
 		},
 },
 ```
+
+## Repeater Similar
+
+https://github.com/alleyinteractive/wordpress-fieldmanager
