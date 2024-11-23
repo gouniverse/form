@@ -135,7 +135,7 @@ func (field *fieldRepeater) BuildFormGroup(fileManagerURL string) *hb.Tag {
 	}
 
 	if !strings.Contains(field.repeaterRemoveUrl, "?") {
-		field.repeaterRemoveUrl = field.repeaterRemoveUrl + `?`
+		field.repeaterRemoveUrl += `?`
 	}
 
 	fieldName := field.GetName()
