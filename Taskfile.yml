@@ -1,0 +1,101 @@
+#
+# This task file allows you to:
+#  1. Build a coverage report
+#  2. Install errcheck
+#  3. Run errcheck
+#  4. Install nilaway
+#  5. Run nilaway
+#  6. Run tests
+#
+# Task file usage: https://taskfile.dev
+#
+
+version: '3'
+
+vars:
+  APPNAME: Form Module
+
+tasks:
+  # ========================== #
+  # START: Help screem (Default)
+  # ========================== #
+  default:
+    cmds:
+        - echo "================================================================"
+        - echo "=                                                              ="
+        - echo "= Welcome to {{.APPNAME}}                                      ="
+        - echo "=                                                              ="
+        - echo "= Select an option from the list below                         ="
+        - echo "=                                                              ="
+        - echo "= 1. To run coverage report type 'task cover'                  ="
+        - echo "= 2. To install err check type 'task errcheck:install'         ="
+        - echo "= 3. To run err check type 'task errcheck'                     ="
+        - echo "= 4. To install nils check type 'task nilaway:install'         ="
+        - echo "= 3. To run nils check type 'task nilaway'                     ="
+        - echo "= 4. To run tests type 'task test'                             ="
+        - echo "=                                                              ="
+        - echo "================================================================"
+    silent: true
+  # ========================== #
+  # END: Help screem (Default) #
+  # ========================== #
+
+  cover:
+    desc: Builds a coverage report
+    cmds:
+      - echo "Generating cover report..."
+      - go test ./... -coverprofile=coverage.out  -covermode=count
+      - go tool cover -html=coverage.out
+      # Eventually add to workflow! - $GOPATH/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken=$COVERALLS_TOKEN
+      - echo "Done!"
+    silent: true
+
+  errcheck:install:
+    desc: Install errcheck or update to latest
+    cmds:
+      - echo "Installing/updating errcheck..."
+      - go install github.com/kisielk/errcheck@latest
+      - echo "Done!"
+    silent: true
+
+  errcheck:
+    desc: Tests for errors
+    cmds:
+      - echo "Checking for errors..."
+      - errcheck ./...
+      - echo "Done!"
+    silent: true
+    
+  nilaway:install:
+    desc: Install nilaway or update to latest
+    cmds:
+      - echo "installing/updating nilaway..."
+      - go install go.uber.org/nilaway/cmd/nilaway@latest
+      - echo "Done!"
+    silent: true
+
+  nilaway:
+    desc: Tests for nils
+    cmds:
+      - echo "Checking for nils..."
+      - nilaway ./...
+      - echo "Done!"
+    silent: true
+    
+  profile:
+    cmds:
+      - echo "Running profiling..."
+      - go test -cpuprofile=cpu.out ./...
+      - go tool pprof cpu.out
+      - go tool pprof -aloc_objects -top -cup mem.profile
+      - go tool pprof -aloc_space -top -cup mem.out
+      - go test -gcflags 'm = m'
+      - echo "Done!"
+    silent: true
+
+  test:
+    cmds:
+      - echo "Running tests..."
+      - go test ./...
+      - echo "Done!"
+    silent: true
