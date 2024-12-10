@@ -270,10 +270,16 @@ func (field *Field) fieldInput(fileManagerURL string) *hb.Tag {
 		} else {
 			input.Attr("readonly", "readonly")
 		}
+
+		// Apply slightly dimmed background
+		input.Style("background: #efefef;")
 	}
 
 	if field.IsDisabled() {
 		input.Attr("disabled", "disabled")
+
+		// Apply slightly dimmed background
+		input.Style("background: #efefef;")
 	}
 
 	return input
