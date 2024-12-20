@@ -126,6 +126,10 @@ func (field *fieldRepeater) SetValue(fieldValue string) {
 }
 
 func (field *fieldRepeater) BuildFormGroup(fileManagerURL string) *hb.Tag {
+	if field.GetName() == "" {
+		return hb.Div().Class("alert alert-danger").Text("Form Error. Repeater has no name")
+	}
+
 	if field.repeaterAddUrl == "" {
 		return hb.Div().Class("alert alert-danger").Text("Form Error. Repeater " + field.GetName() + " has no repeaterAddUrl")
 	}
@@ -138,20 +142,22 @@ func (field *fieldRepeater) BuildFormGroup(fileManagerURL string) *hb.Tag {
 		field.repeaterRemoveUrl += `?`
 	}
 
-	fieldName := field.GetName()
+	repeaterFieldName := field.GetName()
 
 	fieldLabel := field.GetLabel()
 	if fieldLabel == "" {
-		fieldLabel = fieldName
+		fieldLabel = repeaterFieldName
 	}
+
+	formID := lo.IfF(field.form != nil, func() string { return field.form.id }).Else("")
 
 	buttonAdd := hb.NewButton().
 		Child(hb.I().Class("bi bi-plus")).
 		HTML(" Add new").
 		Class("btn btn-sm btn-primary ms-3 float-end").
-		HxInclude("#" + field.form.id).
+		HxInclude("#" + formID).
 		HxPost(field.repeaterAddUrl).
-		HxTarget("#" + field.form.id)
+		HxTarget("#" + formID)
 
 	formGroupLabel := hb.NewLabel().
 		HTML(fieldLabel).
@@ -169,9 +175,10 @@ func (field *fieldRepeater) BuildFormGroup(fileManagerURL string) *hb.Tag {
 			clonedField := field.clone()
 
 			clonedField.SetID(clonedField.GetID() + `_` + cast.ToString(index))
+
 			fieldName := clonedField.GetName()
 			fieldRepeaterValue := lo.ValueOr(mapKeyValue, fieldName, "")
-			fieldRepeaterName := fieldName + `[]` // + `[` + cast.ToString(index) + `]`
+			fieldRepeaterName := repeaterFieldName + `[` + fieldName + `][]` // + `[` + cast.ToString(index) + `]`
 
 			clonedField.SetName(fieldRepeaterName)
 			clonedField.SetValue(fieldRepeaterValue)
@@ -183,27 +190,27 @@ func (field *fieldRepeater) BuildFormGroup(fileManagerURL string) *hb.Tag {
 			Child(hb.I().Class("bi bi-trash")).
 			Title("Delete").
 			Class("btn btn-sm btn-danger float-end").
-			HxInclude("#" + field.form.id).
+			HxInclude("#" + formID).
 			HxPost(field.repeaterRemoveUrl + `&repeatable_remove_index=` + cast.ToString(index)).
-			HxTarget("#" + field.form.id).
+			HxTarget("#" + formID).
 			HxTrigger("click")
 
 		buttonMoveUp := hb.NewButton().
 			Child(hb.I().Class("bi bi-arrow-up-circle")).
 			Title("Move Up").
 			Class("btn btn-sm btn-default").
-			HxInclude("#" + field.form.id).
+			HxInclude("#" + formID).
 			HxPost(field.repeaterMoveUpUrl + `&repeatable_move_up_index=` + cast.ToString(index)).
-			HxTarget("#" + field.form.id).
+			HxTarget("#" + formID).
 			HxTrigger("click")
 
 		buttonMoveDown := hb.NewButton().
 			Child(hb.I().Class("bi bi-arrow-down-circle")).
 			Title("Move Down").
 			Class("btn btn-sm btn-default").
-			HxInclude("#" + field.form.id).
+			HxInclude("#" + formID).
 			HxPost(field.repeaterMoveDownUrl + `&repeatable_move_down_index=` + cast.ToString(index)).
-			HxTarget("#" + field.form.id).
+			HxTarget("#" + formID).
 			HxTrigger("click")
 
 		card := hb.NewDiv().

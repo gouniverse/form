@@ -185,6 +185,60 @@ linkTargets: ['_blank'],
 },
 ```
 
+## Repeater
+
+The repeater field is a special field that allows you to add and remove
+a group of fields. Each group of fields is called a "repeater item".
+
+The repeater field is created with the `NewRepeater` method.
+
+Each field in the repeater item, is given a unique name, prefixed with the
+repeater name, followed by the field name, and a dynamic index. This allows
+each field to be identified when posting the form.
+
+```golang
+fieldRepeater := NewRepeater(RepeaterOptions{
+	Name: "REPEATER_NAME",
+	Fields: []FieldInterface{
+		&Field{
+			ID:   "ID_1",
+			Name: "FIELD_NAME_1",
+			Type: FORM_FIELD_TYPE_STRING,
+		},
+		&Field{
+			ID:   "ID_2",
+			Name: "FIELD_NAME_2",
+			Type: FORM_FIELD_TYPE_STRING,
+		},
+	},
+	Values: []map[string]string{
+		{
+			"FIELD_NAME_1": "VALUE_1_01",
+			"FIELD_NAME_2": "VALUE_2_01",
+		},
+		{
+			"FIELD_NAME_1": "VALUE_1_02",
+			"FIELD_NAME_2": "VALUE_2_02",
+		},
+	},
+	RepeaterAddUrl:      "REPEATER_ADD_URL",
+	RepeaterMoveUpUrl:   "REPEATER_MOVE_UP_URL",
+	RepeaterMoveDownUrl: "REPEATER_MOVE_DOWN_URL",
+	RepeaterRemoveUrl:   "REPEATER_REMOVE_URL",
+})
+
+The form when posted will look like this:
+
+```post
+// first repeater item
+REPEATER_NAME[FIELD_NAME_1][] = VALUE_1_01
+REPEATER_NAME[FIELD_NAME_2][] = VALUE_2_01
+
+// second repeater item
+REPEATER_NAME[FIELD_NAME_1][] = VALUE_1_02
+REPEATER_NAME[FIELD_NAME_2][] = VALUE_2_02
+```
+
 ## Repeater Similar
 
 https://github.com/alleyinteractive/wordpress-fieldmanager

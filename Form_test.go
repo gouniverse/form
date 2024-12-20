@@ -42,6 +42,7 @@ func TestFormWithRepeater(t *testing.T) {
 	form := NewForm(FormOptions{
 		Fields: []FieldInterface{
 			NewRepeater(RepeaterOptions{
+				Name:                "REPEATER_NAME",
 				Label:               "LABEL",
 				RepeaterAddUrl:      "REPEATER_ADD_URL",
 				RepeaterMoveUpUrl:   "REPEATER_MOVE_UP_URL",
@@ -89,8 +90,8 @@ func TestFormWithRepeater(t *testing.T) {
 		`hx-post="REPEATER_REMOVE_URL`,
 		`hx-post="REPEATER_MOVE_UP_URL`,
 		`hx-post="REPEATER_MOVE_DOWN_URL`,
-		`name="NAME_1[]"`,
-		`name="NAME_2[]"`,
+		`name="REPEATER_NAME[NAME_1][]"`,
+		`name="REPEATER_NAME[NAME_2][]"`,
 		`value="VALUE_1_01"`,
 		`value="VALUE_1_02"`,
 		`value="VALUE_2_01"`,
