@@ -73,7 +73,7 @@ func (form *Form) Build() *hb.Tag {
 	}
 
 	if form.hxSwap != "" {
-		hbForm.HxSwap(form.hxSwap)
+		hbForm.HxSwap(hb.SwapMethod(form.hxSwap))
 	}
 
 	return hbForm
